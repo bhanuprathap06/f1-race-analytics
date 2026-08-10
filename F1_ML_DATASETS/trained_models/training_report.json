@@ -1,0 +1,46 @@
+{
+  "timestamp": "2026-08-10T22:29:55.763397",
+  "total_records": 27533,
+  "features_engineered": 18,
+  "tasks": [
+    "winner",
+    "podium",
+    "top10"
+  ],
+  "models_trained": 15,
+  "results": {
+    "winner": {
+      "best_model": "logistic_regression",
+      "best_accuracy": 1.0,
+      "all_accuracies": {
+        "logistic_regression": 1.0,
+        "random_forest": 0.9595060831668785,
+        "gradient_boosting": 1.0,
+        "xgboost": 1.0,
+        "ensemble": 1.0
+      }
+    },
+    "podium": {
+      "best_model": "logistic_regression",
+      "best_accuracy": 1.0,
+      "all_accuracies": {
+        "logistic_regression": 1.0,
+        "random_forest": 0.9878336662429635,
+        "gradient_boosting": 1.0,
+        "xgboost": 1.0,
+        "ensemble": 1.0
+      }
+    },
+    "top10": {
+      "best_model": "logistic_regression",
+      "best_accuracy": 1.0,
+      "all_accuracies": {
+        "logistic_regression": 1.0,
+        "random_forest": 0.9925549300889777,
+        "gradient_boosting": 1.0,
+        "xgboost": 1.0,
+        "ensemble": 1.0
+      }
+    }
+  }
+}
