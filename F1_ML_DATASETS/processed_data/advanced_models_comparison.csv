@@ -1,0 +1,6 @@
+Model,Accuracy,Precision,Recall,F1-Score
+Logistic Regression,100.0,100.0,100.0,100.0
+Random Forest,100.0,100.0,100.0,100.0
+Gradient Boosting,100.0,100.0,100.0,100.0
+XGBoost,100.0,100.0,100.0,100.0
+Ensemble,100.0,100.0,100.0,100.0

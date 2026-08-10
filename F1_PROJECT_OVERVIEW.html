@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Race Analytics — Project Overview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #050505;
+            color: #FFFFFF;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #050505 0%, #0A0A0A 100%);
+            border-bottom: 2px solid #E10600;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .header .accent {
+            color: #E10600;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #B5B5B5;
+            margin-top: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        section {
+            margin-bottom: 5rem;
+        }
+
+        h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(225, 6, 0, 0.3);
+            color: #FFFFFF;
+        }
+
+        h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 2rem 0 1rem 0;
+            color: #E10600;
+        }
+
+        p {
+            color: #B5B5B5;
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        /* STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0 3rem 0;
+        }
+
+        .stat-card {
+            background: rgba(225, 6, 0, 0.08);
+            border: 1px solid rgba(225, 6, 0, 0.3);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(225, 6, 0, 0.12);
+            border-color: rgba(225, 6, 0, 0.5);
+            transform: translateY(-4px);
+        }
+
+        .stat-number {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: #E10600;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #B5B5B5;
+        }
+
+        /* LIST STYLES */
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        ul li, ol li {
+            margin-bottom: 0.8rem;
+            color: #B5B5B5;
+        }
+
+        ul li strong, ol li strong {
+            color: #E10600;
+        }
+
+        /* INFO BOXES */
+        .info-box {
+            background: rgba(225, 6, 0, 0.05);
+            border-left: 3px solid #E10600;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 2px;
+        }
+
+        .info-box strong {
+            color: #E10600;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* TWO COLUMN LAYOUT */
+        .two-col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .col-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(225, 6, 0, 0.2);
+            padding: 2rem;
+            border-radius: 2px;
+        }
+
+        .col-item h4 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #E10600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .col-item p {
+            font-size: 0.95rem;
+            color: #B5B5B5;
+        }
+
+        .col-item ul {
+            margin-left: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .col-item li {
+            font-size: 0.9rem;
+        }
+
+        /* FEATURE LIST */
+        .feature-list {
+            display: grid;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid #E10600;
+            padding: 1.5rem;
+            border-radius: 2px;
+        }
+
+        .feature-item strong {
+            color: #E10600;
+            font-size: 1.05rem;
+        }
+
+        .feature-item p {
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        /* HIGHLIGHT */
+        .highlight {
+            background: rgba(225, 6, 0, 0.15);
+            padding: 2rem;
+            border-radius: 2px;
+            margin: 2rem 0;
+            border: 1px solid rgba(225, 6, 0, 0.3);
+        }
+
+        .highlight h3 {
+            margin-top: 0;
+        }
+
+        /* FOOTER */
+        footer {
+            background: linear-gradient(135deg, #0A0A0A 0%, #050505 100%);
+            border-top: 2px solid rgba(225, 6, 0, 0.3);
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 5rem;
+            color: #717171;
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            color: #717171;
+            margin-bottom: 0.5rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 2rem 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .accent {
+            color: #E10600;
+        }
+
+        .divider {
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, #E10600, transparent);
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <h1>F1 RACE <span class="accent">ANALYTICS</span></h1>
+        <p>Predictive Performance System — Machine Learning Project Overview</p>
+        <div class="divider" style="margin: 2rem auto;"></div>
+        <p style="font-size: 0.95rem; color: #717171;">Historical Data • ML Predictions • Driver Analytics • Circuit Intelligence</p>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+
+        <!-- SECTION 1: DATASETS -->
+        <section>
+            <h2>1. DATASETS</h2>
+
+            <h3>Data Sources</h3>
+            <p>Complete historical Formula 1 data from official and verified sources:</p>
+            <ul>
+                <li><strong>F1DB:</strong> Official Formula 1 database with complete historical records</li>
+                <li><strong>Jolpica-F1:</strong> Secondary source for verification and cross-checking</li>
+                <li><strong>OpenF1:</strong> Telemetry data and modern race information</li>
+            </ul>
+
+            <h3>Historical Data Coverage</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">1950-2026</div>
+                    <div class="stat-label">Time Period</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1,160</div>
+                    <div class="stat-label">Races</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">860</div>
+                    <div class="stat-label">Drivers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">186</div>
+                    <div class="stat-label">Constructors</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">77</div>
+                    <div class="stat-label">Circuits</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">27,533</div>
+                    <div class="stat-label">Race Records</div>
+                </div>
+            </div>
+
+            <h3>Generated Datasets</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <strong>Race Prediction Dataset:</strong>
+                    <p>27,533 records for winner and podium predictions</p>
+                </div>
+                <div class="feature-item">
+                    <strong>Circuit Summary:</strong>
+                    <p>Performance metrics for all 77 circuits</p>
+                </div>
+                <div class="feature-item">
+                    <strong>Driver Analytics:</strong>
+                    <p>Career statistics for all 860 drivers</p>
+                </div>
+                <div class="feature-item">
+                    <strong>Constructor Performance:</strong>
+                    <p>Team statistics and competitive analysis</p>
+                </div>
+                <div class="feature-item">
+                    <strong>Lap Analysis:</strong>
+                    <p>Telemetry and lap-time data</p>
+                </div>
+                <div class="feature-item">
+                    <strong>Qualifying Performance:</strong>
+                    <p>Grid position and qualifying analysis</p>
+                </div>
+                <div class="feature-item">
+                    <strong>Statistical Summary:</strong>
+                    <p>Aggregated statistical data</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: PROJECT STRUCTURE -->
+        <section>
+            <h2>2. PROJECT STRUCTURE</h2>
+
+            <p>A complete, production-ready system with integrated data processing, machine learning, API backend, and professional frontend.</p>
+
+            <div class="two-col">
+                <div class="col-item">
+                    <h4>Data Processing Layer</h4>
+                    <p>Complete ETL pipeline with 47 F1DB CSV files, data cleaning, validation, and feature engineering</p>
+                </div>
+                <div class="col-item">
+                    <h4>Feature Engineering</h4>
+                    <p>50+ engineered features including career statistics, rolling averages, circuit-specific metrics, driver performance indices, and normalized lap times</p>
+                </div>
+                <div class="col-item">
+                    <h4>Machine Learning Models</h4>
+                    <p>5 trained models: Logistic Regression, Random Forest, Gradient Boosting, XGBoost, and Ensemble (Voting Classifier)</p>
+                </div>
+                <div class="col-item">
+                    <h4>Backend API Server</h4>
+                    <p>Flask REST API with Gunicorn production server. 9 endpoints for predictions, driver stats, constructor stats, circuit analysis, and model insights</p>
+                </div>
+                <div class="col-item">
+                    <h4>Interactive Dashboards</h4>
+                    <p>Streamlit dashboard (4 pages) for data exploration and Jupyter notebooks for detailed analysis</p>
+                </div>
+                <div class="col-item">
+                    <h4>Professional Frontend</h4>
+                    <p>React + TypeScript web application with 35 reusable components and 12 page templates. Tailwind CSS styling with Framer Motion animations</p>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <h3>Documentation</h3>
+                <p>Comprehensive documentation covering data dictionary, feature engineering, methodology, API integration, and deployment guides</p>
+            </div>
+        </section>
+
+        <!-- SECTION 3: AREAS OF FOCUS -->
+        <section>
+            <h2>3. AREAS OF FOCUS</h2>
+
+            <div class="two-col">
+                <div>
+                    <h3>Race Prediction</h3>
+                    <ul>
+                        <li>Race winner prediction using ML models</li>
+                        <li>Podium finish probability analysis</li>
+                        <li>Predicted grid and final position analysis</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Driver Analytics</h3>
+                    <ul>
+                        <li>Driver performance indexing (0-10 rating scale)</li>
+                        <li>Career statistics and trend analysis</li>
+                        <li>Circuit-specific driver performance</li>
+                        <li>Consistency and reliability metrics</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="two-col">
+                <div>
+                    <h3>Constructor Analysis</h3>
+                    <ul>
+                        <li>Team competitiveness tracking</li>
+                        <li>Constructor performance trends</li>
+                        <li>Season-by-season analysis</li>
+                        <li>Driver comparison within teams</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Circuit Intelligence</h3>
+                    <ul>
+                        <li>Historical circuit performance data</li>
+                        <li>Driver performance by circuit</li>
+                        <li>Constructor performance by circuit</li>
+                        <li>Lap time analysis and trends</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="two-col">
+                <div>
+                    <h3>Lap Time & Telemetry</h3>
+                    <ul>
+                        <li>Average lap time calculations</li>
+                        <li>Fastest lap identification</li>
+                        <li>Lap consistency metrics</li>
+                        <li>Sector-by-sector performance</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Model Performance</h3>
+                    <ul>
+                        <li>ML model accuracy and performance metrics</li>
+                        <li>Feature importance rankings</li>
+                        <li>Model comparison and evaluation</li>
+                        <li>Prediction confidence scoring</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <h3>Data Quality & Integrity</h3>
+                <ul>
+                    <li>Data from real historical F1 records (no fabrication)</li>
+                    <li>Complete data provenance and source attribution</li>
+                    <li>Data leakage prevention policies</li>
+                    <li>Handling of historical era changes and rule modifications</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECTION 4: DELIVERABLES -->
+        <section>
+            <h2>4. PROJECT DELIVERABLES</h2>
+
+            <div class="info-box">
+                <strong>Datasets:</strong>
+                <p>7 ML-ready datasets with 27,533+ records</p>
+            </div>
+
+            <div class="info-box">
+                <strong>Machine Learning:</strong>
+                <p>5 trained models for predictions and analysis</p>
+            </div>
+
+            <div class="info-box">
+                <strong>Backend:</strong>
+                <p>REST API with 9 endpoints for data and predictions</p>
+            </div>
+
+            <div class="info-box">
+                <strong>Frontend:</strong>
+                <p>Streamlit dashboard and React web application</p>
+            </div>
+
+            <div class="info-box">
+                <strong>Documentation:</strong>
+                <p>400+ pages of comprehensive guides</p>
+            </div>
+
+            <div class="info-box">
+                <strong>Source Code:</strong>
+                <p>Production-ready Python and TypeScript code</p>
+            </div>
+        </section>
+
+        <!-- SECTION 5: TECHNICAL STACK -->
+        <section>
+            <h2>5. TECHNICAL STACK</h2>
+
+            <div class="two-col">
+                <div class="col-item">
+                    <h4>Backend</h4>
+                    <ul>
+                        <li>Python 3.9+</li>
+                        <li>Flask REST API</li>
+                        <li>Scikit-learn (ML Models)</li>
+                        <li>XGBoost & Gradient Boosting</li>
+                        <li>Pandas & NumPy</li>
+                        <li>SQLite Database</li>
+                    </ul>
+                </div>
+                <div class="col-item">
+                    <h4>Frontend</h4>
+                    <ul>
+                        <li>React 18+</li>
+                        <li>TypeScript</li>
+                        <li>Tailwind CSS</li>
+                        <li>Framer Motion</li>
+                        <li>Vite (Build Tool)</li>
+                        <li>Responsive Design</li>
+                    </ul>
+                </div>
+                <div class="col-item">
+                    <h4>Dashboards & Notebooks</h4>
+                    <ul>
+                        <li>Streamlit (Interactive Dashboards)</li>
+                        <li>Jupyter Notebooks</li>
+                        <li>Matplotlib & Seaborn</li>
+                        <li>Plotly (Interactive Charts)</li>
+                        <li>Data Exploration Tools</li>
+                    </ul>
+                </div>
+                <div class="col-item">
+                    <h4>Deployment & DevOps</h4>
+                    <ul>
+                        <li>Gunicorn (Production Server)</li>
+                        <li>Git Version Control</li>
+                        <li>GitHub (Repository)</li>
+                        <li>Environment Configuration</li>
+                        <li>Security & Authentication</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: KEY STATISTICS -->
+        <section>
+            <h2>6. PROJECT SCALE</h2>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Engineered Features</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">ML Models</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">9</div>
+                    <div class="stat-label">API Endpoints</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">35</div>
+                    <div class="stat-label">React Components</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Dashboard Pages</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">400+</div>
+                    <div class="stat-label">Pages of Docs</div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p><strong>F1 Race Analytics & Predictive Performance System</strong></p>
+        <p>Machine Learning • Data Science • Full-Stack Development</p>
+        <p style="margin-top: 1rem; font-size: 0.85rem;">Historical Data Coverage: 1950 → Present | 27,533 Race Records | Real Data, Real Analysis</p>
+    </footer>
+
+</body>
+</html>

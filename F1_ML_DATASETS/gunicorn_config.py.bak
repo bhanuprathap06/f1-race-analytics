@@ -1,0 +1,45 @@
+"""
+Gunicorn Configuration for F1 ML API
+Production-ready WSGI server configuration
+"""
+
+# Server socket
+bind = '0.0.0.0:8000'
+backlog = 2048
+
+# Worker processes
+workers = 4  # Production: (2 × CPU cores) + 1
+worker_class = 'sync'  # For CPU-bound ML models
+worker_connections = 1000
+timeout = 120  # Important for ML model training
+
+# Server mechanics
+daemon = False
+pidfile = None
+max_requests = 1000  # Reload workers after N requests (prevents memory leaks)
+max_requests_jitter = 50
+
+# Logging
+accesslog = 'logs/gunicorn-access.log'
+errorlog = 'logs/gunicorn-error.log'
+loglevel = 'info'
+access_log_format = '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s" %(D)s'
+
+# Process naming
+proc_name = 'f1_ml_api'
+
+# Server hooks
+def on_starting(server):
+    print("[F1 ML] Gunicorn server starting...")
+
+def when_ready(server):
+    print("[F1 ML] Gunicorn server is ready")
+    print(f"[F1 ML] Workers: {server.cfg.workers}")
+    print(f"[F1 ML] Listening on: {server.cfg.bind}")
+
+def on_exit(server):
+    print("[F1 ML] Gunicorn server shutting down")
+
+# SSL (optional, for production)
+# keyfile = '/path/to/keyfile'
+# certfile = '/path/to/certfile'

@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: f1-ml-api
+    ports:
+      - "8000:8000"
+    environment:
+      - FLASK_ENV=production
+      - LOG_LEVEL=info
+    volumes:
+      - ./logs:/app/logs
+      - ./processed_data:/app/processed_data
+      - ./raw_data:/app/raw_data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  dashboard:
+    build: .
+    container_name: f1-ml-dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_SERVER_PORT=8501
+    volumes:
+      - ./processed_data:/app/processed_data
+      - ./raw_data:/app/raw_data
+    command: streamlit run streamlit_dashboard.py
+    restart: unless-stopped
+    depends_on:
+      - api

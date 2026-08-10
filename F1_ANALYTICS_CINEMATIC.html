@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Formula 1 Race Analytics & Predictive Performance System">
+    <title>F1 RACE ANALYTICS — Predictive Performance System</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #050505;
+            color: #FFFFFF;
+            overflow-x: hidden;
+        }
+
+        .condensed {
+            font-family: 'Barlow Condensed', sans-serif;
+        }
+
+        /* ===== SECTION BASE ===== */
+        section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #050505 0%, #0A0A0A 100%);
+            z-index: -2;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        h1 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(2rem, 8vw, 5rem);
+            font-weight: 900;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(1.5rem, 5vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #B5B5B5;
+            max-width: 600px;
+            margin-bottom: 1.5rem;
+        }
+
+        .accent {
+            color: #E10600;
+        }
+
+        .stat-number {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(225, 6, 0, 0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4rem;
+        }
+
+        .nav-logo {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .nav-logo .accent {
+            color: #E10600;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: #B5B5B5;
+            text-decoration: none;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-menu a:hover {
+            color: #E10600;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 2rem;
+            }
+            .nav-menu {
+                display: none;
+            }
+        }
+
+        /* ===== ACT 01: THE QUESTION ===== */
+        #act-01 {
+            background: #050505;
+        }
+
+        .question-text {
+            text-align: center;
+            opacity: 0;
+        }
+
+        .question-main {
+            margin-bottom: 3rem;
+        }
+
+        .question-sub {
+            font-size: 1.3rem;
+            color: #B5B5B5;
+            margin-bottom: 1rem;
+        }
+
+        .racing-line {
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, #E10600, transparent);
+            margin: 3rem auto;
+            opacity: 0;
+        }
+
+        /* ===== ACT 02: THE DATA ===== */
+        #act-02 {
+            background: linear-gradient(135deg, #050505 0%, #0A0A0A 100%);
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            margin-top: 4rem;
+        }
+
+        .data-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(225, 6, 0, 0.2);
+            padding: 2rem;
+            border-radius: 0;
+            text-align: center;
+            opacity: 0;
+        }
+
+        .data-item-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            color: #E10600;
+        }
+
+        .data-item-desc {
+            font-size: 0.9rem;
+            color: #B5B5B5;
+            line-height: 1.4;
+        }
+
+        /* ===== ACT 03: THE CIRCUIT ===== */
+        #act-03 {
+            background: linear-gradient(135deg, #0A0A0A 0%, #111111 100%);
+        }
+
+        .circuit-viz {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(225, 6, 0, 0.3);
+            margin: 3rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .circuit-line {
+            position: absolute;
+            width: 2px;
+            height: 60%;
+            background: #E10600;
+            opacity: 0;
+            transform-origin: center;
+        }
+
+        .circuit-label {
+            position: absolute;
+            font-size: 0.9rem;
+            color: #B5B5B5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ===== ACT 04: THE DRIVER ===== */
+        #act-04 {
+            background: linear-gradient(135deg, #111111 0%, #171717 100%);
+        }
+
+        .driver-viz {
+            width: 100%;
+            max-width: 700px;
+            margin-top: 3rem;
+        }
+
+        .performance-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+        }
+
+        .performance-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 150px;
+            color: #B5B5B5;
+        }
+
+        .performance-track {
+            flex: 1;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .performance-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #E10600, #B00000);
+            width: 0%;
+            animation: fillWidth 0.8s ease forwards;
+        }
+
+        @keyframes fillWidth {
+            to { width: 100%; }
+        }
+
+        /* ===== ACT 05: THE MODEL ===== */
+        #act-05 {
+            background: linear-gradient(135deg, #171717 0%, #111111 100%);
+        }
+
+        .pipeline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 900px;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .pipeline-stage {
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+            opacity: 0;
+        }
+
+        .pipeline-box {
+            background: rgba(225, 6, 0, 0.1);
+            border: 1px solid rgba(225, 6, 0, 0.3);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #B5B5B5;
+        }
+
+        .pipeline-arrow {
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(225, 6, 0, 0.5), transparent);
+            margin-bottom: 1rem;
+        }
+
+        /* ===== ACT 06: THE PREDICTION ===== */
+        #act-06 {
+            background: linear-gradient(135deg, #111111 0%, #0A0A0A 100%);
+        }
+
+        .prediction-interface {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(225, 6, 0, 0.2);
+            padding: 3rem;
+            margin-top: 2rem;
+        }
+
+        .prediction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .prediction-item {
+            background: rgba(225, 6, 0, 0.05);
+            border-left: 2px solid #E10600;
+            padding: 1.5rem;
+            opacity: 0;
+        }
+
+        .prediction-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #B5B5B5;
+            margin-bottom: 0.5rem;
+        }
+
+        .prediction-value {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: #E10600;
+        }
+
+        .grid-preview {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 3rem;
+        }
+
+        .grid-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(225, 6, 0, 0.1);
+            align-items: center;
+            opacity: 0;
+            font-size: 0.9rem;
+        }
+
+        .grid-position {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #E10600;
+        }
+
+        .grid-driver {
+            color: #B5B5B5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .grid-prob {
+            text-align: right;
+            color: #B5B5B5;
+        }
+
+        /* ===== ACT 07: DRIVER INDEX ===== */
+        #act-07 {
+            background: linear-gradient(135deg, #0A0A0A 0%, #111111 100%);
+        }
+
+        .index-visualization {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 3rem;
+        }
+
+        .index-score {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .index-number {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            color: #E10600;
+            margin-bottom: 1rem;
+        }
+
+        .index-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #B5B5B5;
+        }
+
+        .index-components {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .component-item {
+            background: rgba(225, 6, 0, 0.05);
+            border: 1px solid rgba(225, 6, 0, 0.2);
+            padding: 1.5rem;
+            text-align: center;
+            opacity: 0;
+        }
+
+        .component-value {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #E10600;
+            margin-bottom: 0.5rem;
+        }
+
+        .component-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #B5B5B5;
+        }
+
+        /* ===== ACT 08: THE SYSTEM ===== */
+        #act-08 {
+            background: linear-gradient(135deg, #111111 0%, #050505 100%);
+        }
+
+        .system-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            margin-top: 3rem;
+        }
+
+        .system-item {
+            background: rgba(225, 6, 0, 0.08);
+            border: 1px solid rgba(225, 6, 0, 0.3);
+            padding: 2rem;
+            text-align: center;
+            opacity: 0;
+        }
+
+        .system-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .system-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .system-desc {
+            font-size: 0.85rem;
+            color: #B5B5B5;
+            line-height: 1.4;
+        }
+
+        .system-cta {
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: #E10600;
+            color: #050505;
+            text-decoration: none;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+
+        .cta-button:hover {
+            background: #B00000;
+            transform: scale(1.05);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: #050505;
+            border-top: 1px solid rgba(225, 6, 0, 0.2);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: #B5B5B5;
+            font-size: 0.85rem;
+        }
+
+        .footer-items {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-items span {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .demo-label {
+            display: inline-block;
+            background: rgba(225, 6, 0, 0.2);
+            color: #E10600;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-left: 0.5rem;
+            border-radius: 2px;
+        }
+
+        /* ===== REDUCED MOTION ===== */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1.5rem;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .pipeline {
+                flex-direction: column;
+            }
+
+            .prediction-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .index-components {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-row {
+                grid-template-columns: 0.5fr 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-logo">F1 <span class="accent">ANALYTICS</span></div>
+        <ul class="nav-menu">
+            <li><a onclick="scrollToSection('act-01')">Question</a></li>
+            <li><a onclick="scrollToSection('act-02')">Data</a></li>
+            <li><a onclick="scrollToSection('act-06')">Prediction</a></li>
+            <li><a onclick="scrollToSection('act-08')">System</a></li>
+        </ul>
+    </nav>
+
+    <!-- ACT 01: THE QUESTION -->
+    <section id="act-01">
+        <div class="container">
+            <div class="question-text">
+                <h1 class="question-main">FORMULA 1</h1>
+                <p class="question-sub" style="font-size: 1.5rem; margin-bottom: 3rem;">CAN A RACE BE PREDICTED?</p>
+                <div class="racing-line"></div>
+                <p style="margin-top: 3rem; font-size: 1.2rem;">
+                    <span class="accent">Not perfectly.</span><br>
+                    Probabilistically.<br>
+                    From the data.
+                </p>
+                <p style="margin-top: 3rem; color: #717171; font-size: 0.95rem;">
+                    1950 → PRESENT
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ACT 02: THE DATA -->
+    <section id="act-02">
+        <div class="container">
+            <h2>THE DATA</h2>
+            <p style="margin-bottom: 0; color: #717171;">Historical F1 records spanning 77 years</p>
+
+            <div class="data-grid">
+                <div class="data-item">
+                    <div class="data-item-title">860</div>
+                    <div class="data-item-desc">Drivers</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-item-title">1,160</div>
+                    <div class="data-item-desc">Races</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-item-title">186</div>
+                    <div class="data-item-desc">Constructors</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-item-title">77</div>
+                    <div class="data-item-desc">Circuits</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-item-title">27,533</div>
+                    <div class="data-item-desc">Race Records</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-item-title">Variable</div>
+                    <div class="data-item-desc">Telemetry Availability</div>
+                </div>
+            </div>
+
+            <p style="margin-top: 4rem; font-size: 0.95rem; color: #717171;">
+                QUALIFYING • LAP TIMES • PIT STOPS • STANDINGS • CIRCUITS • DRIVER PERFORMANCE
+            </p>
+        </div>
+    </section>
+
+    <!-- ACT 03: THE CIRCUIT -->
+    <section id="act-03">
+        <div class="container">
+            <h2>THE CIRCUIT</h2>
+            <p style="margin-bottom: 2rem;">Different circuits demand different strategies</p>
+
+            <div class="circuit-viz">
+                <svg style="width: 100%; height: 100%;" viewBox="0 0 400 300">
+                    <defs>
+                        <linearGradient id="circuitGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#E10600;stop-opacity:0.8" />
+                            <stop offset="100%" style="stop-color:#B00000;stop-opacity:0.2" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M 200 50 Q 300 100 300 200 Q 200 250 100 200 Q 100 100 200 50"
+                          stroke="url(#circuitGradient)" stroke-width="3" fill="none" class="circuit-path"/>
+                    <circle cx="200" cy="50" r="4" fill="#E10600"/>
+                    <text x="200" y="30" text-anchor="middle" fill="#B5B5B5" font-size="12" text-transform="uppercase">START/FINISH</text>
+                </svg>
+                <div style="position: absolute; bottom: 20px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #B5B5B5;">CONCEPTUAL CIRCUIT VISUALIZATION</div>
+            </div>
+
+            <div style="margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; width: 100%; max-width: 600px;">
+                <div style="text-align: center;">
+                    <div style="font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; font-weight: 700; color: #E10600; margin-bottom: 0.5rem;">AVG LAP TIME</div>
+                    <div style="font-size: 0.85rem; color: #B5B5B5; text-transform: uppercase; letter-spacing: 1px;">VARIES BY CIRCUIT</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; font-weight: 700; color: #E10600; margin-bottom: 0.5rem;">CONSISTENCY</div>
+                    <div style="font-size: 0.85rem; color: #B5B5B5; text-transform: uppercase; letter-spacing: 1px;">DEFINES PERFORMANCE</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ACT 04: THE DRIVER -->
+    <section id="act-04">
+        <div class="container">
+            <h2>THE DRIVER</h2>
+            <p style="margin-bottom: 1rem;">Performance is not one dimension. It is seven.</p>
+
+            <div class="driver-viz">
+                <div class="performance-bar">
+                    <div class="performance-label">Race Performance</div>
+                    <div class="performance-track"><div class="performance-fill" style="width: 85%;"></div></div>
+                    <div style="font-size: 0.85rem; color: #E10600; font-weight: 700;">85%</div>
+                </div>
+                <div class="performance-bar">
+                    <div class="performance-label">Lap Performance</div>
+                    <div class="performance-track"><div class="performance-fill" style="width: 88%;"></div></div>
+                    <div style="font-size: 0.85rem; color: #E10600; font-weight: 700;">88%</div>
+                </div>
+                <div class="performance-bar">
+                    <div class="performance-label">Qualifying</div>
+                    <div class="performance-track"><div class="performance-fill" style="width: 82%;"></div></div>
+                    <div style="font-size: 0.85rem; color: #E10600; font-weight: 700;">82%</div>
+                </div>
+                <div class="performance-bar">
+                    <div class="performance-label">Consistency</div>
+                    <div class="performance-track"><div class="performance-fill" style="width: 86%;"></div></div>
+                    <div style="font-size: 0.85rem; color: #E10600; font-weight: 700;">86%</div>
+                </div>
+                <div class="performance-bar">
+                    <div class="performance-label">Reliability</div>
+                    <div class="performance-track"><div class="performance-fill" style="width: 90%;"></div></div>
+                    <div style="font-size: 0.85rem; color: #E10600; font-weight: 700;">90%</div>
+                </div>
+            </div>
+
+            <p style="margin-top: 3rem; font-size: 0.95rem; color: #717171;">
+                THESE DIMENSIONS VARY BY CIRCUIT AND TIME
+            </p>
+        </div>
+    </section>
+
+    <!-- ACT 05: THE MODEL -->
+    <section id="act-05">
+        <div class="container">
+            <h2>THE MODEL</h2>
+            <p style="margin-bottom: 2rem;">From raw data to predictive insight</p>
+
+            <div class="pipeline">
+                <div class="pipeline-stage">
+                    <div class="pipeline-box">RAW DATA</div>
+                </div>
+                <div style="width: 100%; text-align: center; margin-bottom: 1rem;">↓</div>
+                <div class="pipeline-stage">
+                    <div class="pipeline-box">CLEANING</div>
+                </div>
+                <div style="width: 100%; text-align: center; margin-bottom: 1rem;">↓</div>
+                <div class="pipeline-stage">
+                    <div class="pipeline-box">ANALYSIS</div>
+                </div>
+                <div style="width: 100%; text-align: center; margin-bottom: 1rem;">↓</div>
+                <div class="pipeline-stage">
+                    <div class="pipeline-box">FEATURES</div>
+                </div>
+                <div style="width: 100%; text-align: center; margin-bottom: 1rem;">↓</div>
+                <div class="pipeline-stage">
+                    <div class="pipeline-box">VALIDATION</div>
+                </div>
+                <div style="width: 100%; text-align: center; margin-bottom: 1rem;">↓</div>
+                <div class="pipeline-stage">
+                    <div class="pipeline-box">LEARNING</div>
+                </div>
+                <div style="width: 100%; text-align: center; margin-bottom: 1rem;">↓</div>
+                <div class="pipeline-stage">
+                    <div class="pipeline-box">PREDICTION</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem; text-align: center; width: 100%; max-width: 700px;">
+                <h3 style="margin-bottom: 2rem;">Three Prediction Tasks</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem;">
+                    <div>
+                        <div style="background: rgba(225, 6, 0, 0.1); border: 1px solid rgba(225, 6, 0, 0.3); padding: 1.5rem; margin-bottom: 1rem;">
+                            <div style="font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; color: #E10600;">RACE WINNER</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="background: rgba(225, 6, 0, 0.1); border: 1px solid rgba(225, 6, 0, 0.3); padding: 1.5rem; margin-bottom: 1rem;">
+                            <div style="font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; color: #E10600;">PODIUM</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="background: rgba(225, 6, 0, 0.1); border: 1px solid rgba(225, 6, 0, 0.3); padding: 1.5rem; margin-bottom: 1rem;">
+                            <div style="font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; color: #E10600;">FINAL POSITION</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ACT 06: THE PREDICTION -->
+    <section id="act-06">
+        <div class="container">
+            <h2>THE PREDICTION</h2>
+            <p style="margin-bottom: 1rem;">What the model estimates for race outcomes</p>
+
+            <div class="prediction-interface">
+                <h3 style="margin-bottom: 1rem; margin-top: 0;">SELECTED GRAND PRIX</h3>
+                <p style="margin-bottom: 2rem; color: #717171; font-size: 0.95rem;">Monaco 2024 (After Qualifying)</p>
+
+                <div class="prediction-grid">
+                    <div class="prediction-item">
+                        <div class="prediction-label">Predicted Winner</div>
+                        <div class="prediction-value">MODEL OUTPUT <span class="demo-label">REQUIRED</span></div>
+                    </div>
+                    <div class="prediction-item">
+                        <div class="prediction-label">Win Probability</div>
+                        <div class="prediction-value">MODEL OUTPUT <span class="demo-label">REQUIRED</span></div>
+                    </div>
+                    <div class="prediction-item">
+                        <div class="prediction-label">Podium Probability</div>
+                        <div class="prediction-value">MODEL OUTPUT <span class="demo-label">REQUIRED</span></div>
+                    </div>
+                    <div class="prediction-item">
+                        <div class="prediction-label">Expected Position</div>
+                        <div class="prediction-value">MODEL OUTPUT <span class="demo-label">REQUIRED</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 4rem;">PREDICTED RACE GRID</h3>
+            <div class="grid-preview">
+                <div class="grid-row" style="background: rgba(225, 6, 0, 0.1); font-weight: 700; border-bottom: 2px solid rgba(225, 6, 0, 0.3);">
+                    <div class="grid-position">P#</div>
+                    <div class="grid-driver">DRIVER</div>
+                    <div class="grid-prob">PROBABILITY</div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-position">1</div>
+                    <div class="grid-driver">Model Output Required</div>
+                    <div class="grid-prob">—</div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-position">2</div>
+                    <div class="grid-driver">Model Output Required</div>
+                    <div class="grid-prob">—</div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-position">3</div>
+                    <div class="grid-driver">Model Output Required</div>
+                    <div class="grid-prob">—</div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-position">4</div>
+                    <div class="grid-driver">Model Output Required</div>
+                    <div class="grid-prob">—</div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-position">5</div>
+                    <div class="grid-driver">Model Output Required</div>
+                    <div class="grid-prob">—</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ACT 07: DRIVER INDEX -->
+    <section id="act-07">
+        <div class="container">
+            <h2>DRIVER PERFORMANCE INDEX</h2>
+            <p style="margin-bottom: 0; color: #717171;">One number. Seven dimensions. 0–10 scale.</p>
+
+            <div class="index-visualization">
+                <div class="index-score">
+                    <div class="index-number">8.7</div>
+                    <div class="index-label">Driver Performance Index <span class="demo-label">DEMO</span></div>
+                </div>
+
+                <p style="color: #717171; font-size: 0.9rem; margin-bottom: 2rem; text-align: center;">
+                    ANALYTICAL FRAMEWORK
+                </p>
+
+                <div class="index-components">
+                    <div class="component-item">
+                        <div class="component-value">8.9</div>
+                        <div class="component-label">Race Performance (25%)</div>
+                    </div>
+                    <div class="component-item">
+                        <div class="component-value">8.8</div>
+                        <div class="component-label">Lap Performance (25%)</div>
+                    </div>
+                    <div class="component-item">
+                        <div class="component-value">8.5</div>
+                        <div class="component-label">Qualifying (15%)</div>
+                    </div>
+                    <div class="component-item">
+                        <div class="component-value">8.4</div>
+                        <div class="component-label">Championship (15%)</div>
+                    </div>
+                    <div class="component-item">
+                        <div class="component-value">8.6</div>
+                        <div class="component-label">Consistency (10%)</div>
+                    </div>
+                    <div class="component-item">
+                        <div class="component-value">8.3</div>
+                        <div class="component-label">Wins/Podiums (5%)</div>
+                    </div>
+                </div>
+
+                <p style="color: #717171; font-size: 0.85rem; margin-top: 2rem; text-align: center; text-transform: uppercase; letter-spacing: 1px;">
+                    This is a proposed methodology, not an official F1 rating.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ACT 08: THE SYSTEM -->
+    <section id="act-08">
+        <div class="container">
+            <h2>THE COMPLETE SYSTEM</h2>
+            <p style="margin-bottom: 2rem;">From data to intelligence</p>
+
+            <div class="system-grid">
+                <div class="system-item">
+                    <div class="system-icon">📊</div>
+                    <div class="system-title">RACE WINNER</div>
+                    <div class="system-desc">Predict the race winner with model confidence</div>
+                </div>
+                <div class="system-item">
+                    <div class="system-icon">🏆</div>
+                    <div class="system-title">PODIUM</div>
+                    <div class="system-desc">Multi-driver podium probability analysis</div>
+                </div>
+                <div class="system-item">
+                    <div class="system-icon">🏁</div>
+                    <div class="system-title">FINAL POSITION</div>
+                    <div class="system-desc">Complete race grid predictions</div>
+                </div>
+                <div class="system-item">
+                    <div class="system-icon">⚡</div>
+                    <div class="system-title">LAP ANALYSIS</div>
+                    <div class="system-desc">Lap time and consistency analysis</div>
+                </div>
+                <div class="system-item">
+                    <div class="system-icon">🛣️</div>
+                    <div class="system-title">CIRCUIT</div>
+                    <div class="system-desc">Circuit-specific performance insights</div>
+                </div>
+                <div class="system-item">
+                    <div class="system-icon">👤</div>
+                    <div class="system-title">DRIVER</div>
+                    <div class="system-desc">Driver performance ratings and analytics</div>
+                </div>
+                <div class="system-item">
+                    <div class="system-icon">🏢</div>
+                    <div class="system-title">CONSTRUCTOR</div>
+                    <div class="system-desc">Team competitiveness and trends</div>
+                </div>
+                <div class="system-item">
+                    <div class="system-icon">🧠</div>
+                    <div class="system-title">MODEL INSIGHTS</div>
+                    <div class="system-desc">Feature importance and model analysis</div>
+                </div>
+            </div>
+
+            <div class="system-cta">
+                <p style="color: #717171; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 3rem;">FROM DATA TO PERFORMANCE TO PREDICTION</p>
+                <button class="cta-button">EXPLORE THE SYSTEM</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-items">
+            <span>HISTORICAL COVERAGE: 1950 → PRESENT</span>
+            <span>27,533 RACE RECORDS</span>
+            <span>MODEL OUTPUT REQUIRED FOR PREDICTIONS</span>
+        </div>
+        <p>Formula 1 Race Analytics & Predictive Performance System</p>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Prefers reduced motion
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // ACT 01: THE QUESTION - Stagger text reveals
+        const questionTexts = document.querySelectorAll('.question-text > *');
+        if (!prefersReducedMotion) {
+            gsap.to(questionTexts, {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                stagger: 0.3,
+                scrollTrigger: {
+                    trigger: '#act-01',
+                    start: 'top center',
+                    once: true
+                }
+            });
+
+            gsap.to('.racing-line', {
+                opacity: 1,
+                width: 300,
+                duration: 1,
+                delay: 1.5,
+                scrollTrigger: {
+                    trigger: '#act-01',
+                    start: 'top center',
+                    once: true
+                }
+            });
+        }
+
+        // ACT 02: THE DATA - Stagger data items
+        const dataItems = document.querySelectorAll('.data-item');
+        if (!prefersReducedMotion) {
+            gsap.to(dataItems, {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                stagger: 0.1,
+                scrollTrigger: {
+                    trigger: '#act-02',
+                    start: 'top center',
+                    once: true
+                }
+            });
+        }
+
+        // ACT 04: THE DRIVER - Performance bars
+        const perfBars = document.querySelectorAll('.performance-bar');
+        if (!prefersReducedMotion) {
+            perfBars.forEach((bar, index) => {
+                gsap.to(bar, {
+                    opacity: 1,
+                    duration: 0.4,
+                    delay: index * 0.1,
+                    scrollTrigger: {
+                        trigger: '#act-04',
+                        start: 'top center',
+                        once: true
+                    }
+                });
+            });
+        }
+
+        // ACT 05: THE MODEL - Pipeline stages
+        const pipelineStages = document.querySelectorAll('.pipeline-stage');
+        if (!prefersReducedMotion) {
+            gsap.to(pipelineStages, {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                stagger: 0.15,
+                scrollTrigger: {
+                    trigger: '#act-05',
+                    start: 'top center',
+                    once: true
+                }
+            });
+        }
+
+        // ACT 06: THE PREDICTION - Prediction items
+        const predictionItems = document.querySelectorAll('.prediction-item');
+        if (!prefersReducedMotion) {
+            gsap.to(predictionItems, {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                stagger: 0.1,
+                scrollTrigger: {
+                    trigger: '#act-06',
+                    start: 'top center',
+                    once: true
+                }
+            });
+
+            gsap.to('.grid-row', {
+                opacity: 1,
+                y: 0,
+                duration: 0.4,
+                stagger: 0.08,
+                scrollTrigger: {
+                    trigger: '#act-06',
+                    start: 'center center',
+                    once: true
+                }
+            });
+        }
+
+        // ACT 07: DRIVER INDEX - Component items
+        const componentItems = document.querySelectorAll('.component-item');
+        if (!prefersReducedMotion) {
+            gsap.to(componentItems, {
+                opacity: 1,
+                y: 0,
+                duration: 0.4,
+                stagger: 0.1,
+                scrollTrigger: {
+                    trigger: '#act-07',
+                    start: 'center center',
+                    once: true
+                }
+            });
+        }
+
+        // ACT 08: THE SYSTEM - System items
+        const systemItems = document.querySelectorAll('.system-item');
+        if (!prefersReducedMotion) {
+            gsap.to(systemItems, {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                stagger: 0.08,
+                scrollTrigger: {
+                    trigger: '#act-08',
+                    start: 'top center',
+                    once: true
+                }
+            });
+        }
+
+        // CTA button hover
+        const ctaButton = document.querySelector('.cta-button');
+        if (ctaButton) {
+            ctaButton.addEventListener('mouseenter', () => {
+                if (!prefersReducedMotion) {
+                    gsap.to(ctaButton, { duration: 0.2, scale: 1.05 });
+                }
+            });
+            ctaButton.addEventListener('mouseleave', () => {
+                if (!prefersReducedMotion) {
+                    gsap.to(ctaButton, { duration: 0.2, scale: 1 });
+                }
+            });
+        }
+
+        // Smooth section transitions
+        window.addEventListener('load', () => {
+            ScrollTrigger.refresh();
+        });
+    </script>
+</body>
+</html>

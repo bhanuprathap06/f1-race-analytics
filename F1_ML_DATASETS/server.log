@@ -1,0 +1,8 @@
+[2026-08-10 18:28:57 +0530] [9] [INFO] Starting gunicorn 26.0.0
+[2026-08-10 18:28:57 +0530] [9] [INFO] Listening at: http://0.0.0.0:8000 (9)
+[2026-08-10 18:28:57 +0530] [9] [INFO] Using worker: sync
+[2026-08-10 18:28:57 +0530] [10] [INFO] Booting worker with pid: 10
+[2026-08-10 18:28:57 +0530] [11] [INFO] Booting worker with pid: 11
+[2026-08-10 18:28:57 +0530] [12] [INFO] Booting worker with pid: 12
+[2026-08-10 18:28:57 +0530] [16] [INFO] Booting worker with pid: 16
+[2026-08-10 18:28:57 +0530] [9] [INFO] Control socket listening at /sessions/pensive-clever-brahmagupta/.gunicorn/gunicorn.ctl
