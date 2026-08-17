@@ -1,0 +1,392 @@
+{
+  "generated": "2026-08-17T22:23:39.258782",
+  "total_seasons": 77,
+  "range": "1950-2026",
+  "data": {
+    "1950": {
+      "champion": "Giuseppe Farina",
+      "points": 30,
+      "win_probability_%": 8.5
+    },
+    "1951": {
+      "champion": "Juan Manuel Fangio",
+      "points": 37,
+      "win_probability_%": 10.5
+    },
+    "1952": {
+      "champion": "Alberto Ascari",
+      "points": 36,
+      "win_probability_%": 10.2
+    },
+    "1953": {
+      "champion": "Alberto Ascari",
+      "points": 34,
+      "win_probability_%": 9.6
+    },
+    "1954": {
+      "champion": "Juan Manuel Fangio",
+      "points": 42,
+      "win_probability_%": 11.9
+    },
+    "1955": {
+      "champion": "Juan Manuel Fangio",
+      "points": 40,
+      "win_probability_%": 11.3
+    },
+    "1956": {
+      "champion": "Juan Manuel Fangio",
+      "points": 30,
+      "win_probability_%": 8.5
+    },
+    "1957": {
+      "champion": "Juan Manuel Fangio",
+      "points": 40,
+      "win_probability_%": 11.3
+    },
+    "1958": {
+      "champion": "Mike Hawthorn",
+      "points": 42,
+      "win_probability_%": 11.9
+    },
+    "1959": {
+      "champion": "Jack Brabham",
+      "points": 43,
+      "win_probability_%": 12.2
+    },
+    "1960": {
+      "champion": "Jack Brabham",
+      "points": 43,
+      "win_probability_%": 12.2
+    },
+    "1961": {
+      "champion": "Phil Hill",
+      "points": 34,
+      "win_probability_%": 9.6
+    },
+    "1962": {
+      "champion": "Graham Hill",
+      "points": 42,
+      "win_probability_%": 11.9
+    },
+    "1963": {
+      "champion": "Jim Clark",
+      "points": 54,
+      "win_probability_%": 15.3
+    },
+    "1964": {
+      "champion": "John Surtees",
+      "points": 40,
+      "win_probability_%": 11.3
+    },
+    "1965": {
+      "champion": "Jim Clark",
+      "points": 54,
+      "win_probability_%": 15.3
+    },
+    "1966": {
+      "champion": "Jack Brabham",
+      "points": 42,
+      "win_probability_%": 11.9
+    },
+    "1967": {
+      "champion": "Denny Hulme",
+      "points": 51,
+      "win_probability_%": 14.4
+    },
+    "1968": {
+      "champion": "Graham Hill",
+      "points": 48,
+      "win_probability_%": 13.6
+    },
+    "1969": {
+      "champion": "Jackie Stewart",
+      "points": 63,
+      "win_probability_%": 17.8
+    },
+    "1970": {
+      "champion": "Jochen Rindt",
+      "points": 45,
+      "win_probability_%": 12.8
+    },
+    "1971": {
+      "champion": "Jackie Stewart",
+      "points": 62,
+      "win_probability_%": 17.6
+    },
+    "1972": {
+      "champion": "Emerson Fittipaldi",
+      "points": 61,
+      "win_probability_%": 17.3
+    },
+    "1973": {
+      "champion": "Jackie Stewart",
+      "points": 71,
+      "win_probability_%": 20.1
+    },
+    "1974": {
+      "champion": "Emerson Fittipaldi",
+      "points": 55,
+      "win_probability_%": 15.6
+    },
+    "1975": {
+      "champion": "Niki Lauda",
+      "points": 54,
+      "win_probability_%": 15.3
+    },
+    "1976": {
+      "champion": "James Hunt",
+      "points": 69,
+      "win_probability_%": 19.6
+    },
+    "1977": {
+      "champion": "Niki Lauda",
+      "points": 72,
+      "win_probability_%": 20.4
+    },
+    "1978": {
+      "champion": "Mario Andretti",
+      "points": 64,
+      "win_probability_%": 18.1
+    },
+    "1979": {
+      "champion": "Jody Scheckter",
+      "points": 51,
+      "win_probability_%": 14.4
+    },
+    "1980": {
+      "champion": "Alan Jones",
+      "points": 67,
+      "win_probability_%": 19.0
+    },
+    "1981": {
+      "champion": "Nelson Piquet",
+      "points": 67,
+      "win_probability_%": 19.0
+    },
+    "1982": {
+      "champion": "Keke Rosberg",
+      "points": 44,
+      "win_probability_%": 12.5
+    },
+    "1983": {
+      "champion": "Nelson Piquet",
+      "points": 59,
+      "win_probability_%": 16.7
+    },
+    "1984": {
+      "champion": "Niki Lauda",
+      "points": 72,
+      "win_probability_%": 20.4
+    },
+    "1985": {
+      "champion": "Alain Prost",
+      "points": 73,
+      "win_probability_%": 20.7
+    },
+    "1986": {
+      "champion": "Alain Prost",
+      "points": 72,
+      "win_probability_%": 20.4
+    },
+    "1987": {
+      "champion": "Nelson Piquet",
+      "points": 76,
+      "win_probability_%": 21.5
+    },
+    "1988": {
+      "champion": "Ayrton Senna",
+      "points": 90,
+      "win_probability_%": 25.5
+    },
+    "1989": {
+      "champion": "Alain Prost",
+      "points": 76,
+      "win_probability_%": 21.5
+    },
+    "1990": {
+      "champion": "Ayrton Senna",
+      "points": 78,
+      "win_probability_%": 22.1
+    },
+    "1991": {
+      "champion": "Ayrton Senna",
+      "points": 96,
+      "win_probability_%": 27.2
+    },
+    "1992": {
+      "champion": "Nigel Mansell",
+      "points": 108,
+      "win_probability_%": 30.6
+    },
+    "1993": {
+      "champion": "Alain Prost",
+      "points": 99,
+      "win_probability_%": 28.1
+    },
+    "1994": {
+      "champion": "Michael Schumacher",
+      "points": 92,
+      "win_probability_%": 26.1
+    },
+    "1995": {
+      "champion": "Michael Schumacher",
+      "points": 102,
+      "win_probability_%": 28.9
+    },
+    "1996": {
+      "champion": "Damon Hill",
+      "points": 97,
+      "win_probability_%": 27.5
+    },
+    "1997": {
+      "champion": "Jacques Villeneuve",
+      "points": 81,
+      "win_probability_%": 22.9
+    },
+    "1998": {
+      "champion": "Mika H\u00e4kkinen",
+      "points": 100,
+      "win_probability_%": 28.3
+    },
+    "1999": {
+      "champion": "Mika H\u00e4kkinen",
+      "points": 76,
+      "win_probability_%": 21.5
+    },
+    "2000": {
+      "champion": "Michael Schumacher",
+      "points": 108,
+      "win_probability_%": 30.6
+    },
+    "2001": {
+      "champion": "Michael Schumacher",
+      "points": 123,
+      "win_probability_%": 34.9
+    },
+    "2002": {
+      "champion": "Michael Schumacher",
+      "points": 144,
+      "win_probability_%": 40.8
+    },
+    "2003": {
+      "champion": "Michael Schumacher",
+      "points": 93,
+      "win_probability_%": 26.4
+    },
+    "2004": {
+      "champion": "Michael Schumacher",
+      "points": 148,
+      "win_probability_%": 41.9
+    },
+    "2005": {
+      "champion": "Kimi R\u00e4ikk\u00f6nen",
+      "points": 133,
+      "win_probability_%": 37.7
+    },
+    "2006": {
+      "champion": "Fernando Alonso",
+      "points": 134,
+      "win_probability_%": 38.0
+    },
+    "2007": {
+      "champion": "Kimi R\u00e4ikk\u00f6nen",
+      "points": 110,
+      "win_probability_%": 31.2
+    },
+    "2008": {
+      "champion": "Lewis Hamilton",
+      "points": 98,
+      "win_probability_%": 27.8
+    },
+    "2009": {
+      "champion": "Jenson Button",
+      "points": 95,
+      "win_probability_%": 26.9
+    },
+    "2010": {
+      "champion": "Sebastian Vettel",
+      "points": 256,
+      "win_probability_%": 72.5
+    },
+    "2011": {
+      "champion": "Sebastian Vettel",
+      "points": 392,
+      "win_probability_%": 95.0
+    },
+    "2012": {
+      "champion": "Sebastian Vettel",
+      "points": 281,
+      "win_probability_%": 79.6
+    },
+    "2013": {
+      "champion": "Sebastian Vettel",
+      "points": 397,
+      "win_probability_%": 95.0
+    },
+    "2014": {
+      "champion": "Lewis Hamilton",
+      "points": 384,
+      "win_probability_%": 95.0
+    },
+    "2015": {
+      "champion": "Lewis Hamilton",
+      "points": 381,
+      "win_probability_%": 95.0
+    },
+    "2016": {
+      "champion": "Lewis Hamilton",
+      "points": 473,
+      "win_probability_%": 95.0
+    },
+    "2017": {
+      "champion": "Lewis Hamilton",
+      "points": 363,
+      "win_probability_%": 95.0
+    },
+    "2018": {
+      "champion": "Lewis Hamilton",
+      "points": 408,
+      "win_probability_%": 95.0
+    },
+    "2019": {
+      "champion": "Lewis Hamilton",
+      "points": 413,
+      "win_probability_%": 95.0
+    },
+    "2020": {
+      "champion": "Lewis Hamilton",
+      "points": 347,
+      "win_probability_%": 95.0
+    },
+    "2021": {
+      "champion": "Max Verstappen",
+      "points": 395,
+      "win_probability_%": 95.0
+    },
+    "2022": {
+      "champion": "Max Verstappen",
+      "points": 454,
+      "win_probability_%": 95.0
+    },
+    "2023": {
+      "champion": "Max Verstappen",
+      "points": 575,
+      "win_probability_%": 95.0
+    },
+    "2024": {
+      "champion": "Max Verstappen",
+      "points": 287,
+      "win_probability_%": 81.3
+    },
+    "2025": {
+      "champion": "Max Verstappen",
+      "points": 320,
+      "win_probability_%": 90.7
+    },
+    "2026": {
+      "champion": "Max Verstappen",
+      "points": 350,
+      "win_probability_%": 95.0
+    }
+  }
+}

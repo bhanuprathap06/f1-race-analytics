@@ -1,0 +1,29 @@
+{
+  "timestamp": "2026-08-17T21:47:51.572985",
+  "test_records": 10,
+  "tasks": [
+    "winner",
+    "podium",
+    "top_10"
+  ],
+  "summary": {
+    "winner": {
+      "positive_predictions": 0,
+      "avg_confidence": 4.612143030549414e-35,
+      "min_confidence": 5.225091722171252e-89,
+      "max_confidence": 4.612143002400963e-34
+    },
+    "podium": {
+      "positive_predictions": 8,
+      "avg_confidence": 0.7999991373200841,
+      "min_confidence": 2.894271833406191e-68,
+      "max_confidence": 1.0
+    },
+    "top_10": {
+      "positive_predictions": 9,
+      "avg_confidence": 0.8998002684279266,
+      "min_confidence": 5.012060824709391e-18,
+      "max_confidence": 1.0
+    }
+  }
+}

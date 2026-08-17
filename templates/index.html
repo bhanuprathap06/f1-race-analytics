@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Race Predictor (1950-2026)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #e10600 0%, #050505 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+        h1 {
+            color: #e10600;
+            margin-bottom: 5px;
+            text-align: center;
+            font-size: 2em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        .stats {
+            text-align: center;
+            color: #999;
+            font-size: 0.8em;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: #e10600;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #e10600;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover { background: #b90400; }
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            display: none;
+        }
+        .results.show { display: block; }
+        .result-item {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-left: 4px solid #e10600;
+            border-radius: 3px;
+        }
+        .result-label {
+            font-weight: bold;
+            color: #333;
+        }
+        .result-value {
+            font-size: 1.3em;
+            color: #e10600;
+            margin-top: 5px;
+        }
+        .progress-bar {
+            background: #ddd;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #e10600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>F1 RACE PREDICTOR</h1>
+        <p class="subtitle">77 Years of Formula 1 Data</p>
+        <div class="stats" id="stats">Loading...</div>
+        
+        <form id="predictionForm">
+            <div class="form-group">
+                <label for="year">Year (1950-2026):</label>
+                <select id="year" required>
+                    <option value="">Select Year...</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="driver">Driver:</label>
+                <select id="driver" required>
+                    <option value="">Select Driver...</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="points">Total Points:</label>
+                <input type="number" id="points" value="287" min="0" max="600" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="circuit">Circuit:</label>
+                <select id="circuit" required>
+                    <option value="">Select Circuit...</option>
+                </select>
+            </div>
+            
+            <button type="submit">PREDICT</button>
+        </form>
+        
+        <div class="results" id="results">
+            <h2 style="color: #e10600; margin-bottom: 20px;">PREDICTIONS</h2>
+            <div class="result-item">
+                <div class="result-label">WIN PROBABILITY</div>
+                <div class="result-value" id="winProb">0%</div>
+                <div class="progress-bar"><div class="progress-fill" id="winBar"></div></div>
+            </div>
+            <div class="result-item">
+                <div class="result-label">PODIUM PROBABILITY</div>
+                <div class="result-value" id="podiumProb">0%</div>
+                <div class="progress-bar"><div class="progress-fill" id="podiumBar"></div></div>
+            </div>
+            <div class="result-item">
+                <div class="result-label">TOP-10 PROBABILITY</div>
+                <div class="result-value" id="top10Prob">0%</div>
+                <div class="progress-bar"><div class="progress-fill" id="top10Bar"></div></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const yearSelect = document.getElementById('year');
+        const driverSelect = document.getElementById('driver');
+        const circuitSelect = document.getElementById('circuit');
+        const statsDiv = document.getElementById('stats');
+        const form = document.getElementById('predictionForm');
+        const results = document.getElementById('results');
+        
+        // Load history stats
+        fetch('/api/history')
+            .then(r => r.json())
+            .then(data => {
+                statsDiv.textContent = `${data.total_years} years | ${data.total_unique_drivers} drivers | ${data.total_circuits} circuits`;
+            });
+        
+        // Load years
+        fetch('/api/years')
+            .then(r => r.json())
+            .then(years => {
+                years.forEach(y => {
+                    const opt = document.createElement('option');
+                    opt.value = y;
+                    opt.textContent = y;
+                    yearSelect.appendChild(opt);
+                });
+            });
+        
+        // Load drivers
+        fetch('/api/drivers')
+            .then(r => r.json())
+            .then(drivers => {
+                drivers.forEach(d => {
+                    const opt = document.createElement('option');
+                    opt.value = d;
+                    opt.textContent = d;
+                    driverSelect.appendChild(opt);
+                });
+            });
+        
+        // Load circuits
+        fetch('/api/circuits')
+            .then(r => r.json())
+            .then(circuits => {
+                circuits.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c;
+                    opt.textContent = c;
+                    circuitSelect.appendChild(opt);
+                });
+            });
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            results.classList.remove('show');
+            
+            try {
+                const res = await fetch('/api/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        driver: driverSelect.value,
+                        circuit: circuitSelect.value,
+                        year: yearSelect.value,
+                        points: document.getElementById('points').value
+                    })
+                });
+                
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error);
+                
+                const pred = data.predictions;
+                document.getElementById('winProb').textContent = pred.win + '%';
+                document.getElementById('winBar').style.width = pred.win + '%';
+                document.getElementById('podiumProb').textContent = pred.podium + '%';
+                document.getElementById('podiumBar').style.width = pred.podium + '%';
+                document.getElementById('top10Prob').textContent = pred.top_10 + '%';
+                document.getElementById('top10Bar').style.width = pred.top_10 + '%';
+                
+                results.classList.add('show');
+            } catch (err) {
+                alert('Error: ' + err.message);
+            }
+        });
+    </script>
+</body>
+</html>

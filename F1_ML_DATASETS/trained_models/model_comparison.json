@@ -1,0 +1,56 @@
+{
+  "winner": {
+    "test_accuracy": {
+      "logistic_regression": 1.0,
+      "random_forest": 0.9547848193208643,
+      "gradient_boosting": 1.0,
+      "xgboost": 1.0,
+      "voting_ensemble": 1.0,
+      "stacking_ensemble": 1.0
+    },
+    "cv_accuracy": {
+      "logistic_regression": 0.9999545970488082,
+      "random_forest": 0.9546444921098718,
+      "gradient_boosting": 1.0,
+      "xgboost": 1.0,
+      "voting_ensemble": 1.0,
+      "stacking_ensemble": 1.0
+    }
+  },
+  "podium": {
+    "test_accuracy": {
+      "logistic_regression": 1.0,
+      "random_forest": 0.9536952968948611,
+      "gradient_boosting": 1.0,
+      "xgboost": 1.0,
+      "voting_ensemble": 1.0,
+      "stacking_ensemble": 1.0
+    },
+    "cv_accuracy": {
+      "logistic_regression": 0.9999546073536087,
+      "random_forest": 0.949332728098048,
+      "gradient_boosting": 1.0,
+      "xgboost": 1.0,
+      "voting_ensemble": 1.0,
+      "stacking_ensemble": 1.0
+    }
+  },
+  "top_10": {
+    "test_accuracy": {
+      "logistic_regression": 1.0,
+      "random_forest": 0.9738514617759215,
+      "gradient_boosting": 1.0,
+      "xgboost": 1.0,
+      "voting_ensemble": 1.0,
+      "stacking_ensemble": 1.0
+    },
+    "cv_accuracy": {
+      "logistic_regression": 1.0,
+      "random_forest": 0.9701716522150425,
+      "gradient_boosting": 1.0,
+      "xgboost": 1.0,
+      "voting_ensemble": 1.0,
+      "stacking_ensemble": 1.0
+    }
+  }
+}

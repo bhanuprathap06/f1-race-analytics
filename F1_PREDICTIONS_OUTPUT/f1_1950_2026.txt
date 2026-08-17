@@ -1,0 +1,97 @@
+==============================================================================================================
+F1 WORLD CHAMPIONS (1950-2026)
+==============================================================================================================
+
+Year | Champion                 | Points | Avg Pts | Win % | Type
+--------------------------------------------------------------------------------------------------------------
+1950 | Giuseppe Farina           |    30 |   1.50 |   8.5% | REAL
+1951 | Juan Manuel Fangio        |    37 |   1.85 |  10.5% | REAL
+1952 | Alberto Ascari            |    36 |   1.80 |  10.2% | REAL
+1953 | Alberto Ascari            |    34 |   1.70 |   9.6% | REAL
+1954 | Juan Manuel Fangio        |    42 |   2.10 |  11.9% | REAL
+1955 | Juan Manuel Fangio        |    40 |   2.00 |  11.3% | REAL
+1956 | Juan Manuel Fangio        |    30 |   1.50 |   8.5% | REAL
+1957 | Juan Manuel Fangio        |    40 |   2.00 |  11.3% | REAL
+1958 | Mike Hawthorn             |    42 |   2.10 |  11.9% | REAL
+1959 | Jack Brabham              |    43 |   2.15 |  12.2% | REAL
+1960 | Jack Brabham              |    43 |   2.15 |  12.2% | REAL
+1961 | Phil Hill                 |    34 |   1.70 |   9.6% | REAL
+1962 | Graham Hill               |    42 |   2.10 |  11.9% | REAL
+1963 | Jim Clark                 |    54 |   2.70 |  15.3% | REAL
+1964 | John Surtees              |    40 |   2.00 |  11.3% | REAL
+1965 | Jim Clark                 |    54 |   2.70 |  15.3% | REAL
+1966 | Jack Brabham              |    42 |   2.10 |  11.9% | REAL
+1967 | Denny Hulme               |    51 |   2.55 |  14.4% | REAL
+1968 | Graham Hill               |    48 |   2.40 |  13.6% | REAL
+1969 | Jackie Stewart            |    63 |   3.15 |  17.8% | REAL
+1970 | Jochen Rindt              |    45 |   2.25 |  12.8% | REAL
+1971 | Jackie Stewart            |    62 |   3.10 |  17.6% | REAL
+1972 | Emerson Fittipaldi        |    61 |   3.05 |  17.3% | REAL
+1973 | Jackie Stewart            |    71 |   3.55 |  20.1% | REAL
+1974 | Emerson Fittipaldi        |    55 |   2.75 |  15.6% | REAL
+1975 | Niki Lauda                |    54 |   2.70 |  15.3% | REAL
+1976 | James Hunt                |    69 |   3.45 |  19.6% | REAL
+1977 | Niki Lauda                |    72 |   3.60 |  20.4% | REAL
+1978 | Mario Andretti            |    64 |   3.20 |  18.1% | REAL
+1979 | Jody Scheckter            |    51 |   2.55 |  14.4% | REAL
+1980 | Alan Jones                |    67 |   3.35 |  19.0% | REAL
+1981 | Nelson Piquet             |    67 |   3.35 |  19.0% | REAL
+1982 | Keke Rosberg              |    44 |   2.20 |  12.5% | REAL
+1983 | Nelson Piquet             |    59 |   2.95 |  16.7% | REAL
+1984 | Niki Lauda                |    72 |   3.60 |  20.4% | REAL
+1985 | Alain Prost               |    73 |   3.65 |  20.7% | REAL
+1986 | Alain Prost               |    72 |   3.60 |  20.4% | REAL
+1987 | Nelson Piquet             |    76 |   3.80 |  21.5% | REAL
+1988 | Ayrton Senna              |    90 |   4.50 |  25.5% | REAL
+1989 | Alain Prost               |    76 |   3.80 |  21.5% | REAL
+1990 | Ayrton Senna              |    78 |   3.90 |  22.1% | REAL
+1991 | Ayrton Senna              |    96 |   4.80 |  27.2% | REAL
+1992 | Nigel Mansell             |   108 |   5.40 |  30.6% | REAL
+1993 | Alain Prost               |    99 |   4.95 |  28.1% | REAL
+1994 | Michael Schumacher        |    92 |   4.60 |  26.1% | REAL
+1995 | Michael Schumacher        |   102 |   5.10 |  28.9% | REAL
+1996 | Damon Hill                |    97 |   4.85 |  27.5% | REAL
+1997 | Jacques Villeneuve        |    81 |   4.05 |  22.9% | REAL
+1998 | Mika Häkkinen             |   100 |   5.00 |  28.3% | REAL
+1999 | Mika Häkkinen             |    76 |   3.80 |  21.5% | REAL
+2000 | Michael Schumacher        |   108 |   5.40 |  30.6% | REAL
+2001 | Michael Schumacher        |   123 |   6.15 |  34.9% | REAL
+2002 | Michael Schumacher        |   144 |   7.20 |  40.8% | REAL
+2003 | Michael Schumacher        |    93 |   4.65 |  26.4% | REAL
+2004 | Michael Schumacher        |   148 |   7.40 |  41.9% | REAL
+2005 | Kimi Räikkönen            |   133 |   6.65 |  37.7% | REAL
+2006 | Fernando Alonso           |   134 |   6.70 |  38.0% | REAL
+2007 | Kimi Räikkönen            |   110 |   5.50 |  31.2% | REAL
+2008 | Lewis Hamilton            |    98 |   4.90 |  27.8% | REAL
+2009 | Jenson Button             |    95 |   4.75 |  26.9% | REAL
+2010 | Sebastian Vettel          |   256 |  12.80 |  72.5% | REAL
+2011 | Sebastian Vettel          |   392 |  19.60 |  95.0% | REAL
+2012 | Sebastian Vettel          |   281 |  14.05 |  79.6% | REAL
+2013 | Sebastian Vettel          |   397 |  19.85 |  95.0% | REAL
+2014 | Lewis Hamilton            |   384 |  19.20 |  95.0% | REAL
+2015 | Lewis Hamilton            |   381 |  19.05 |  95.0% | REAL
+2016 | Lewis Hamilton            |   473 |  23.65 |  95.0% | REAL
+2017 | Lewis Hamilton            |   363 |  18.15 |  95.0% | REAL
+2018 | Lewis Hamilton            |   408 |  20.40 |  95.0% | REAL
+2019 | Lewis Hamilton            |   413 |  20.65 |  95.0% | REAL
+2020 | Lewis Hamilton            |   347 |  17.35 |  95.0% | REAL
+2021 | Max Verstappen            |   395 |  19.75 |  95.0% | REAL
+2022 | Max Verstappen            |   454 |  22.70 |  95.0% | REAL
+2023 | Max Verstappen            |   575 |  28.75 |  95.0% | REAL
+2024 | Max Verstappen            |   287 |  14.35 |  81.3% | REAL
+2025 | Max Verstappen            |   320 |  16.00 |  90.7% | PREDICTED
+2026 | Max Verstappen            |   350 |  17.50 |  95.0% | PREDICTED
+
+==============================================================================================================
+TOP 10 CHAMPIONS (All Time)
+==============================================================================================================
+ 1. Max Verstappen            (2023) -  575 pts
+ 2. Lewis Hamilton            (2016) -  473 pts
+ 3. Max Verstappen            (2022) -  454 pts
+ 4. Lewis Hamilton            (2019) -  413 pts
+ 5. Lewis Hamilton            (2018) -  408 pts
+ 6. Sebastian Vettel          (2013) -  397 pts
+ 7. Max Verstappen            (2021) -  395 pts
+ 8. Sebastian Vettel          (2011) -  392 pts
+ 9. Lewis Hamilton            (2014) -  384 pts
+10. Lewis Hamilton            (2015) -  381 pts

@@ -1,0 +1,68 @@
+================================================================================
+F1 RACE PREDICTOR - A3 POSTER
+2-LINE TECHNICAL EXPLANATIONS FOR ALL 5 VISUALIZATIONS
+Ready for Handwriting on Printed Poster
+================================================================================
+
+GRAPH 1: FEATURE IMPORTANCE (Bar Chart - Top 15 Features)
+─────────────────────────────────────────────────────────────────────────────
+
+Driver average points (18.34%) and grid position (15.67%) rank as top predictive features,
+demonstrating that historical performance metrics and qualifying results are strongest indicators for race winner classification.
+
+================================================================================
+
+GRAPH 2: DISTRIBUTION ANALYSIS (Three Histograms)
+─────────────────────────────────────────────────────────────────────────────
+
+Driver performance exhibits right-skewed distribution (mean=7.69, median=6.86) while grid position
+shows near-uniform spread and constructor performance follows normal distribution (mean=9.85, median=10.00), indicating diverse predictive value.
+
+================================================================================
+q
+GRAPH 3: CLASS DISTRIBUTION (Three Pie Charts)
+─────────────────────────────────────────────────────────────────────────────
+
+Winner class imbalance (4.2% winners, 95.8% non-winners) mirrors real F1 outcomes; podium class shows 12.7% positive cases
+and top-10 class contains 42.1%, requiring stratified sampling to prevent bias in model training.
+
+================================================================================
+
+GRAPH 4: CORRELATION ANALYSIS (Two Scatter Plots)
+─────────────────────────────────────────────────────────────────────────────
+
+Grid position exhibits Pearson correlation of 0.951 with final position (strong linear relationship)
+while feature importance shows logarithmic correlation with model accuracy, validating feature engineering effectiveness.
+
+================================================================================
+
+GRAPH 5: FEATURE IMPORTANCE HEATMAP (Task-Specific Ranking)
+─────────────────────────────────────────────────────────────────────────────
+
+Feature importance rankings differ significantly across prediction tasks with driver average points dominant across all three
+(18.34% winner, 10.45% podium, 22.34% top-10), demonstrating consistent predictive power across classification boundaries.
+
+================================================================================
+HANDWRITING INSTRUCTIONS
+================================================================================
+
+Format: Write exactly 2 lines per explanation
+Font: Natural handwriting (blue or black pen)
+Placement: Below corresponding visualization on A3 poster
+Style: Impersonal, technical tone (no pronouns like "we" or "our")
+Spacing: Leave adequate margin around text boxes
+
+================================================================================
+VERIFICATION CHECKLIST
+================================================================================
+
+☑ All 5 explanations handwritten clearly
+☑ Each explanation exactly 2 lines
+☑ Technical terminology accurate
+☑ No AI-sounding phrases
+☑ Handwriting is legible from 1 meter distance
+☑ Blue or black ink used (permanent)
+☑ Explanations match corresponding graphs
+☑ Professional appearance maintained
+
+================================================================================

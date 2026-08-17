@@ -1,0 +1,49 @@
+{
+  "total_seasons": 77,
+  "total_unique_champions": 33,
+  "most_titles": 8,
+  "top_champions": [
+    [
+      "Lewis Hamilton",
+      8
+    ],
+    [
+      "Michael Schumacher",
+      7
+    ],
+    [
+      "Max Verstappen",
+      6
+    ],
+    [
+      "Juan Manuel Fangio",
+      5
+    ],
+    [
+      "Alain Prost",
+      4
+    ],
+    [
+      "Sebastian Vettel",
+      4
+    ],
+    [
+      "Jack Brabham",
+      3
+    ],
+    [
+      "Jackie Stewart",
+      3
+    ],
+    [
+      "Niki Lauda",
+      3
+    ],
+    [
+      "Nelson Piquet",
+      3
+    ]
+  ],
+  "highest_points": 575,
+  "avg_points": 139.42857142857142
+}
