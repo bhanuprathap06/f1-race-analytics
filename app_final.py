@@ -103,7 +103,7 @@ YEARS_AVAILABLE = sorted(list(HISTORICAL_CHAMPS.keys()))
 # ============================================================================
 
 def engineer_features(driver_name, year, total_points, circuit):
-    """Engineer features for ML prediction with improved accuracy"""
+    """Engineer features for ML prediction - calibrated for trained models"""
 
     driver_info = DRIVERS_DB[driver_name]
     difficulty = CIRCUITS[circuit]
@@ -113,97 +113,67 @@ def engineer_features(driver_name, year, total_points, circuit):
     years_active = len(driver_champ_years)
 
     driver_all_pts = [pts for yr, (d, pts) in HISTORICAL_CHAMPS.items() if d == driver_name]
-
-    # Only consider championship data from the same era (approximate races per season)
-    # 2002: 17 races, 1950: 6 races, etc.
     driver_avg_champ_pts = sum(driver_all_pts) / max(1, len(driver_all_pts)) if driver_all_pts else 50
 
-    # Elite drivers (champions): calculate win rate from points
-    # Approximate: in 2002 Schumacher had 144 pts from 17 races = 8.47 pts/race
-    # Each win = 10 pts in modern era, so ~84% win rate
-    races_in_season = 17 if year >= 2000 else (16 if year >= 1990 else (14 if year >= 1980 else 12))
-    avg_pts_per_race = driver_avg_champ_pts / (races_in_season / 2) if years_active > 0 else 1
+    # Driver skill: Senna avg=88 (3x champion), Schumacher avg=120 (7x champion)
+    # Scale: 0-150 range maps to 0-1 skill, but elite drivers cluster above 0.8
+    driver_skill = min(1.0, driver_avg_champ_pts / 110.0)  # Adjust divisor for better elite scaling
 
-    # Driver skill based on championship points (better calibration)
-    # Schumacher (144) -> 0.96, Hamilton (413) -> 0.99, Average (50) -> 0.33
-    driver_skill = min(0.99, (driver_avg_champ_pts / 150.0) ** 0.9)  # Non-linear scaling favors elite drivers
-
-    # Championship correlation: high season points = high championship quality
-    # 2002 Schumacher: 144 pts -> very high win probability
-    championship_quality = min(1.0, total_points / max(80, driver_avg_champ_pts * 1.2))
-
-    # Performance metrics
+    # Points ratio vs historical average
     avg_pts = total_points / 20 if total_points > 0 else 1
-    performance_ratio = min(3.0, total_points / max(40, driver_avg_champ_pts))
+    # High points relative to driver average = championship level performance
+    points_multiplier = min(2.5, total_points / max(45, driver_avg_champ_pts))
 
-    # Elite drivers get better grid positions
-    elite_factor = 1.5 if driver_skill > 0.85 else (1.2 if driver_skill > 0.70 else (0.8 if driver_skill > 0.5 else 0.5))
-    base_grid = max(1, 18 - (avg_pts * 2.0 * elite_factor))
+    # Grid position - elite drivers start ahead
+    elite_bonus = 3.0 if driver_skill > 0.75 else (2.0 if driver_skill > 0.65 else 1.0)
+    base_grid = max(1, 16 - (avg_pts * 1.5) + elite_bonus)
 
-    # Create feature dictionary with improved calibration
+    # Create feature dictionary - matches trained model expectations
     features = {
         'year': year,
         'grid': max(1, min(20, base_grid)),
         'driver_total_points': total_points,
         'driver_avg_points': avg_pts,
-        # Elite drivers have lower variance
-        'driver_points_std': max(0.3, avg_pts * (0.3 - 0.25 * driver_skill)),
-        # Championship quality drivers finish much better
-        'driver_avg_position': max(1, 20 - (avg_pts * 2.8 * championship_quality * driver_skill)),
-        # Elite drivers get P1 frequently (Schumacher 2002: 15/17 wins = 88%)
-        'driver_best_position': max(1, int(1 + (18 * (1 - driver_skill) ** 2))),
-        # Elite drivers rarely finish outside points
-        'driver_worst_position': min(20, int(15 + (5 * (1 - driver_skill) ** 1.5))),
-        # Elite drivers much more consistent
-        'driver_position_std': max(1, 5 * (1 - driver_skill) ** 1.3),
+        'driver_points_std': max(0.5, avg_pts * (0.35 - 0.15 * driver_skill)),
+        'driver_avg_position': max(1, 21 - (avg_pts * 2.4 * driver_skill * points_multiplier)),
+        'driver_best_position': max(1, int(1 + (16 * (1 - driver_skill) ** 1.8))),
+        'driver_worst_position': min(20, int(16 + (4 * (1 - driver_skill)))),
+        'driver_position_std': max(1, 5.5 * (1 - driver_skill) ** 1.2),
         'driver_avg_grid': base_grid,
-        # Elite drivers have very consistent grid positions
-        'driver_grid_std': max(0.8, 3 * (1 - driver_skill) ** 1.2),
-        # Elite drivers qualify on front row regularly
-        'driver_best_grid': max(1, int(1 + (6 * (1 - driver_skill) ** 2))),
-        'driver_worst_grid': min(20, int(12 + (8 * (1 - driver_skill)))),
-        'driver_races_count': min(350, 20 + (years_active * 10)),
-        # Strong team factor for champions
-        'constructor_total_points': total_points * (1.8 + 0.6 * driver_skill),
-        'constructor_avg_points': avg_pts * (1.8 + 0.6 * driver_skill),
-        'constructor_points_std': max(1.5, 6 - (4 * driver_skill)),
-        # Championship-winning teams finish very high
-        'constructor_avg_position': max(2, 13 - (driver_skill * 11)),
-        'constructor_best_position': max(1, int(1 + (2 * (1 - driver_skill)))),
-        'constructor_position_std': max(1, 3 * (1 - driver_skill)),
-        'constructor_avg_grid': max(1, base_grid * 0.9),
-        'constructor_races_count': min(500, 60 + (years_active * 15)),
-        # Elite drivers dominate at easy circuits
-        'circuit_avg_position': max(2, 14 - (8 * (1 - difficulty)) - (5 * driver_skill)),
-        'circuit_position_std': max(2, 5 * difficulty),
-        'circuit_avg_points': max(3, avg_pts * (1.3 - 0.3 * difficulty) * championship_quality),
-        'circuit_points_std': max(1, avg_pts * 0.25 * difficulty),
-        'circuit_avg_grid': max(1, base_grid * (1 - difficulty * 0.2)),
+        'driver_grid_std': max(1, 3.5 * (1 - driver_skill)),
+        'driver_best_grid': max(1, int(2 + (4 * (1 - driver_skill) ** 1.5))),
+        'driver_worst_grid': min(20, int(14 + (6 * (1 - driver_skill)))),
+        'driver_races_count': min(350, 20 + (years_active * 9)),
+        'constructor_total_points': total_points * (1.6 + 0.5 * driver_skill),
+        'constructor_avg_points': avg_pts * (1.6 + 0.5 * driver_skill),
+        'constructor_points_std': max(2, 7.5 - (3.5 * driver_skill)),
+        'constructor_avg_position': max(2, 14 - (driver_skill * 10)),
+        'constructor_best_position': max(1, int(1 + (2.5 * (1 - driver_skill)))),
+        'constructor_position_std': max(1, 3.5 * (1 - driver_skill)),
+        'constructor_avg_grid': max(2, base_grid + 0.5),
+        'constructor_races_count': min(500, 50 + (years_active * 15)),
+        'circuit_avg_position': max(3, 15 - (7 * (1 - difficulty)) - (4 * driver_skill)),
+        'circuit_position_std': max(2, 5.5 * difficulty),
+        'circuit_avg_points': max(2, avg_pts * (1.25 - 0.35 * difficulty)),
+        'circuit_points_std': max(1, avg_pts * 0.3 * difficulty),
+        'circuit_avg_grid': max(2, base_grid + (1.5 * difficulty)),
         'circuit_difficulty': difficulty,
-        'circuit_races_count': 6 + int(years_active / 3),
-        # Elite drivers gain positions
-        'grid_to_position_diff': 3 * driver_skill,
-        'qualified_better': 1 if driver_skill > 0.6 else 0,
-        'qualified_worse': 0 if driver_skill > 0.6 else 1,
-        # Elite drivers don't DNF
-        'dnf_flag': 0 if driver_skill > 0.7 else (1 if (difficulty > 0.7 and driver_skill < 0.4) else 0),
+        'circuit_races_count': 5 + int(years_active / 4),
+        'grid_to_position_diff': 2 + (1.5 * driver_skill),
+        'qualified_better': 1 if driver_skill > 0.55 else 0,
+        'qualified_worse': 0 if driver_skill > 0.55 else 1,
+        'dnf_flag': 0 if driver_skill > 0.65 else (1 if (difficulty > 0.65 and driver_skill < 0.35) else 0),
         'points_earned': 1,
-        # Elite drivers very consistent
-        'driver_consistency': max(1.2, 2.5 * driver_skill),
-        'constructor_consistency': max(1.0, 2.0 * driver_skill),
-        # Championship quality performance ratio
-        'driver_performance_ratio': min(3.0, championship_quality * performance_ratio),
-        'constructor_performance_ratio': min(3.5, championship_quality * performance_ratio * 1.2),
-        # Elite drivers gain many positions
-        'driver_grid_improvement': 2 + (2 * driver_skill),
-        # Championship synergy very high for elite drivers
-        'driver_constructor_synergy': max(60, avg_pts * (8 + 20 * driver_skill)),
-        # Championship drivers excellent on all circuits
-        'driver_circuit_affinity': max(0.5, 0.7 + (0.3 * (1 - difficulty)) + (0.2 * driver_skill)),
-        # Elite drivers maintain form
-        'driver_rolling_points_5': max(2, avg_pts * (1.0 + 0.2 * championship_quality)),
-        'driver_rolling_grid_5': max(1, base_grid * (1 - 0.1 * driver_skill)),
-        'constructor_rolling_points_5': max(3, avg_pts * (1.6 + 0.3 * championship_quality)),
+        'driver_consistency': max(0.9, 2.1 * driver_skill),
+        'constructor_consistency': max(0.9, 1.6 * driver_skill),
+        'driver_performance_ratio': min(2.2, points_multiplier),
+        'constructor_performance_ratio': min(2.8, points_multiplier * 1.3),
+        'driver_grid_improvement': 1 + (1.5 * driver_skill),
+        'driver_constructor_synergy': max(50, avg_pts * (6 + 14 * driver_skill)),
+        'driver_circuit_affinity': max(0.3, 0.6 + (0.4 * (1 - difficulty)) * driver_skill),
+        'driver_rolling_points_5': max(1, avg_pts * (0.95 + 0.15 * points_multiplier)),
+        'driver_rolling_grid_5': max(1, base_grid * 0.97),
+        'constructor_rolling_points_5': max(2, avg_pts * (1.5 + 0.25 * points_multiplier)),
     }
 
     return features
