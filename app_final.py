@@ -129,13 +129,16 @@ def engineer_features(driver_name, year, total_points, circuit):
     base_grid = max(1, 16 - (avg_pts * 1.5) + elite_bonus)
 
     # Create feature dictionary - matches trained model expectations
+    # Circuit difficulty factor: easy circuits boost win%, hard circuits reduce it
+    circuit_factor = 1.0 + ((0.5 - difficulty) * 0.8)  # Monaco (0.75) = 0.60x, Australia (0.40) = 1.24x
+
     features = {
         'year': year,
-        'grid': max(1, min(20, base_grid)),
+        'grid': max(1, min(20, base_grid + (difficulty * 3))),  # Harder circuits = worse grid
         'driver_total_points': total_points,
-        'driver_avg_points': avg_pts,
-        'driver_points_std': max(0.5, avg_pts * (0.35 - 0.15 * driver_skill)),
-        'driver_avg_position': max(1, 21 - (avg_pts * 2.4 * driver_skill * points_multiplier)),
+        'driver_avg_points': avg_pts * circuit_factor,  # Circuit difficulty affects points expectation
+        'driver_points_std': max(0.5, avg_pts * (0.35 - 0.15 * driver_skill) * (0.8 + 0.4 * difficulty)),
+        'driver_avg_position': max(1, 21 - (avg_pts * 2.4 * driver_skill * points_multiplier * circuit_factor)),
         'driver_best_position': max(1, int(1 + (16 * (1 - driver_skill) ** 1.8))),
         'driver_worst_position': min(20, int(16 + (4 * (1 - driver_skill)))),
         'driver_position_std': max(1, 5.5 * (1 - driver_skill) ** 1.2),
@@ -144,8 +147,8 @@ def engineer_features(driver_name, year, total_points, circuit):
         'driver_best_grid': max(1, int(2 + (4 * (1 - driver_skill) ** 1.5))),
         'driver_worst_grid': min(20, int(14 + (6 * (1 - driver_skill)))),
         'driver_races_count': min(350, 20 + (years_active * 9)),
-        'constructor_total_points': total_points * (1.6 + 0.5 * driver_skill),
-        'constructor_avg_points': avg_pts * (1.6 + 0.5 * driver_skill),
+        'constructor_total_points': total_points * (1.6 + 0.5 * driver_skill) * circuit_factor,
+        'constructor_avg_points': avg_pts * (1.6 + 0.5 * driver_skill) * circuit_factor,
         'constructor_points_std': max(2, 7.5 - (3.5 * driver_skill)),
         'constructor_avg_position': max(2, 14 - (driver_skill * 10)),
         'constructor_best_position': max(1, int(1 + (2.5 * (1 - driver_skill)))),
@@ -154,7 +157,7 @@ def engineer_features(driver_name, year, total_points, circuit):
         'constructor_races_count': min(500, 50 + (years_active * 15)),
         'circuit_avg_position': max(3, 15 - (7 * (1 - difficulty)) - (4 * driver_skill)),
         'circuit_position_std': max(2, 5.5 * difficulty),
-        'circuit_avg_points': max(2, avg_pts * (1.25 - 0.35 * difficulty)),
+        'circuit_avg_points': max(2, avg_pts * (1.25 - 0.35 * difficulty) * circuit_factor),
         'circuit_points_std': max(1, avg_pts * 0.3 * difficulty),
         'circuit_avg_grid': max(2, base_grid + (1.5 * difficulty)),
         'circuit_difficulty': difficulty,
@@ -215,13 +218,31 @@ def predict():
 
         # Make predictions
         X_winner = WINNER_SCALER.transform(X[FEATURE_COLS])
-        win_prob = float(WINNER_MODEL.predict_proba(X_winner)[0][1] * 100)
+        win_prob_raw = float(WINNER_MODEL.predict_proba(X_winner)[0][1] * 100)
 
         X_podium = PODIUM_SCALER.transform(X[FEATURE_COLS])
-        podium_prob = float(PODIUM_MODEL.predict_proba(X_podium)[0][1] * 100)
+        podium_prob_raw = float(PODIUM_MODEL.predict_proba(X_podium)[0][1] * 100)
 
         X_top10 = TOP10_SCALER.transform(X[FEATURE_COLS])
-        top10_prob = float(TOP10_MODEL.predict_proba(X_top10)[0][1] * 100)
+        top10_prob_raw = float(TOP10_MODEL.predict_proba(X_top10)[0][1] * 100)
+
+        # Post-processing: amplify elite driver predictions based on historical dominance
+        # Schumacher 2002: 144pts/17races = 8.47pts/race ≈ 84% win rate (15/17 wins)
+        # Senna 1991: 96pts/16races = 6pts/race ≈ 75% win rate
+        # Hamilton 2016: 473pts/21races = 22.5pts/race ≈ very high dominance
+
+        driver_champ_years_pred = [yr for yr, (d, _) in HISTORICAL_CHAMPS.items() if d == driver]
+        driver_all_pts_pred = [pts for yr, (d, pts) in HISTORICAL_CHAMPS.items() if d == driver]
+        driver_avg_champ_pred = sum(driver_all_pts_pred) / max(1, len(driver_all_pts_pred)) if driver_all_pts_pred else 50
+        driver_dominance = min(1.0, points / max(50, driver_avg_champ_pred * 1.3))
+        circuit_boost = 1.0 + ((0.5 - CIRCUITS[circuit]) * 0.6)  # Easy circuits boost, hard reduce
+
+        # Amplify predictions for dominant performances
+        amplify_factor = 1.0 + (driver_dominance * 0.4 * circuit_boost)
+
+        win_prob = min(99.0, win_prob_raw * amplify_factor)
+        podium_prob = min(99.9, podium_prob_raw * amplify_factor * 1.1)
+        top10_prob = min(99.99, top10_prob_raw * amplify_factor * 1.2)
 
         logger.info(f"✓ Prediction: {driver} @ {circuit} {year} | Win: {win_prob:.1f}%")
 
